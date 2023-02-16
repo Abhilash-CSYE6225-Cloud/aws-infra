@@ -1,0 +1,16 @@
+region = "us-east-1"
+profile = "dev"
+cidr_vpc = ["10.0.0.0/16", "10.1.0.0/16"]
+availability_zones = ["a", "b", "c"]
+vpc_1 = "vpc_aws_1"
+vpc_2 = "vpc_aws_2"
+public_sname = "public-aws-subnet"
+private_sname = "private-aws-subnet"
+igateway_1 = "internet-gw-1"
+igateway_2 = "internet-gw-2"
+public_rtable_name = "public-aws-route-table"
+private_rtable_name = "private-aws-route-table"
+routetable_cidr = "0.0.0.0/0"
+prefix_1 = "10.0."
+prefix_2 ="10.1."
+postfix = ".0/24"
