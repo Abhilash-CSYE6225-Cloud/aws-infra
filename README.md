@@ -1,7 +1,7 @@
-# Assignment 3 - Abhilash Gade
+# Assignment 4 - Abhilash Gade
 
 ## Description
-This Terraform script creates a Virtual Private Cloud (VPC) in AWS and creates 3 public and 3 private subnets in different availability zones in the same region. It also creates an Internet Gateway, public and private route tables, and a public route in the public route table.
+This Terraform script creates a Virtual Private Cloud (VPC) in AWS and creates 3 public and 3 private subnets in different availability zones in the same region. It also creates an Internet Gateway, public and private route tables, and a public route in the public route table. It also creates a EC2 instance with neccessary security groups
 
 ## Instructions
 
