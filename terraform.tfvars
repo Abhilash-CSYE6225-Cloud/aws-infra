@@ -1,5 +1,5 @@
-region          = "us-east-1"
-profile         = "dev"
+region              = "us-east-1"
+profile             = "dev"
 vpc_cidr            = ["10.0.0.0/16", "10.1.0.0/16"]
 availability_zones  = ["a", "b", "c"]
 vpc_name_1          = "vpc_1"
