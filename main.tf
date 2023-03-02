@@ -182,11 +182,11 @@ After=network.target
 Environment="NODE_ENV=dev"
 Environment="DB_PORT=3000"
 Environment="DIALECT=mysql"
-Environment="DB_HOST=${element(split(":", aws_db_instance.rds_instance.endpoint), 0)}"
-Environment="DB_USERNAME=${aws_db_instance.rds_instance.username}"
-Environment="DB_PASSWORD=${aws_db_instance.rds_instance.password}"
-Environment="DB_NAME=${aws_db_instance.rds_instance.db_name}"
-Environment="AWS_BUCKET_NAME=${aws_s3_bucket.webapp-s3.bucket}"
+Environment="DB_HOST=${aws_db_instance.default.address}"
+Environment="DB_USERNAME=${aws_db_instance.default.username}"
+Environment="DB_PASSWORD=${aws_db_instance.default.password}"
+Environment="DB_NAME=${aws_db_instance.default.db_name}"
+Environment="AWS_BUCKET_NAME=${aws_s3_bucket.private_bucket.bucket}"
 Environment="AWS_REGION=${var.aws_region}"
 
 Type=simple
@@ -206,11 +206,11 @@ sudo systemctl enable webapp.service
 echo 'export NODE_ENV=dev' >> /home/ec2-user/.bashrc,
 echo 'export DB_PORT=3000' >> /home/ec2-user/.bashrc,
 echo 'export DIALECT=mysql' >> /home/ec2-user/.bashrc,
-echo 'export DB_HOST=${element(split(":", aws_db_instance.rds_instance.endpoint), 0)}' >> /home/ec2-user/.bashrc,
-echo 'export DB_USERNAME=${aws_db_instance.rds_instance.username}' >> /home/ec2-user/.bashrc,
-echo 'export DB_PASSWORD=${aws_db_instance.rds_instance.password}' >> /home/ec2-user/.bashrc,
-echo 'export DB_NAME=${aws_db_instance.rds_instance.db_name}' >> /home/ec2-user/.bashrc,
-echo 'export AWS_BUCKET_NAME=${aws_s3_bucket.webapp-s3.bucket}' >> /home/ec2-user/.bashrc,
+echo 'export DB_HOST=${aws_db_instance.default.address}' >> /home/ec2-user/.bashrc,
+echo 'export DB_USERNAME=${aws_db_instance.default.username}' >> /home/ec2-user/.bashrc,
+echo 'export DB_PASSWORD=${aws_db_instance.default.password}' >> /home/ec2-user/.bashrc,
+echo 'export DB_NAME=${aws_db_instance.default.db_name}' >> /home/ec2-user/.bashrc,
+echo 'export AWS_BUCKET_NAME=${aws_s3_bucket.private_bucket.bucket}' >> /home/ec2-user/.bashrc,
 echo 'export AWS_REGION=${var.aws_region}' >> /home/ec2-user/.bashrc,
 source /home/ec2-user/.bashrc
 EOT
