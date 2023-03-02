@@ -1,109 +1,91 @@
-variable "region" {
+variable "aws_region" {
   type        = string
-  description = "AWS region which is closest"
+  description = "Closest AWS Region"
   default     = "us-east-1"
 }
 
-variable "profile" {
+variable "aws_profile" {
   type        = string
-  description = "AWS working profile"
+  description = "AWS Profile to launch"
   default     = "dev"
 }
 
-variable "vpc_cidr" {
-  type        = list(string)
-  description = "The CIDR block of the VPC"
-  default     = ["10.0.0.0/16", "10.1.0.0/16"]
+variable "cidr_block" {
+  type        = string
+  description = "CIDR Block for VPC"
+  default     = "10.0.0.0/16"
 }
 
 variable "availability_zones" {
   type        = list(string)
-  description = "Subnets availability zones"
+  description = "Availabillity zones for subnets"
   default     = ["a", "b", "c"]
 }
 
-variable "vpc_name_1" {
+variable "vpc_name" {
   type        = string
-  description = "Name of the VPC"
-  default     = "vpc_1"
-}
-
-variable "vpc_name_2" {
-  type        = string
-  description = "Name of the VPC"
-  default     = "vpc_2"
+  description = "Name for VPC"
+  default     = "csye-vpc"
 }
 
 variable "public_subnet_name" {
   type        = string
-  description = "Name of the public subnet"
-  default     = "prod-public-subnet"
+  description = "Public subnet name"
+  default     = "csye-public-subnet"
 }
 
 variable "private_subnet_name" {
   type        = string
-  description = "Name of the private subnet"
-  default     = "prod-private-subnet"
+  description = "Private subnet name"
+  default     = "csye-private-subnet"
 }
 
-variable "gateway_name_1" {
+variable "gateway_name" {
   type        = string
-  description = "Name of the gateway"
-  default     = "internet-gateway-1"
+  description = "Gateway name"
+  default     = "csye-gateway"
 }
 
-variable "gateway_name_2" {
+variable "public_table_name" {
   type        = string
-  description = "Name of the gateway"
-  default     = "internet-gateway-2"
+  description = "public route table name"
+  default     = "csye-public-route-table"
 }
 
-variable "public_rt_name" {
+variable "private_table_name" {
   type        = string
-  description = "Name of the public route table"
-  default     = "prod-public-route-table"
+  description = "private route table name"
+  default     = "csye-private-route-table"
 }
 
-variable "private_rt_name" {
+variable "cidr_gateway" {
   type        = string
-  description = "Name of the private route table"
-  default     = "prod-private-route-table"
-}
-
-variable "rt_cidr" {
-  type        = string
-  description = "The CIDR block of the route table"
+  description = "subnet for gateway"
   default     = "0.0.0.0/0"
 }
 
-variable "subnet_prefix_1" {
+variable "sub_prefix" {
   type        = string
-  description = "prefix of the cidr"
+  description = "prefix for cidr"
   default     = "10.0."
 }
 
-variable "subnet_prefix_2" {
+variable "sub_postfix" {
   type        = string
-  description = "prefix of the cidr"
-  default     = "10.1."
-}
-
-variable "subnet_postfix" {
-  type        = string
-  description = "postfix of the cidr"
+  description = "postfix for cidr"
   default     = ".0/24"
 }
 
-variable "security_grp_name" {
+variable "security_group_name" {
   type        = string
   description = "security group name"
-  default     = "prod application"
+  default     = "applicatiom"
 }
 
 variable "ports" {
   type        = list(number)
-  description = "list of ports"
-  default     = [22, 80, 443, 3000, 0]
+  description = "list of parts"
+  default     = [22, 80, 443, 5000, 0]
 }
 
 variable "protocol" {
@@ -112,7 +94,7 @@ variable "protocol" {
   default     = "tcp"
 }
 
-variable "e_protocol" {
+variable "eprotocol" {
   type        = string
   description = "egress protocol name"
   default     = "-1"
@@ -121,22 +103,22 @@ variable "e_protocol" {
 variable "keypair_name" {
   type        = string
   description = "key-pair name"
-  default     = "app_key_pair"
+  default     = "app_keypair"
 }
 
 variable "keypair_path" {
   type        = string
   description = "key-pair path"
-  default     = "~/.ssh/public_key.pem"
+  default     = "~/.ssh/id_rsa.pub"
 }
 
-variable "ebs_vol_size" {
+variable "ebs_volume_size" {
   type        = number
   description = "ebs volume size"
   default     = 50
 }
 
-variable "ebs_vol_type" {
+variable "ebs_volume_type" {
   type        = string
   description = "ebs volume type"
   default     = "gp2"
@@ -148,7 +130,7 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-variable "conn_type" {
+variable "connection_type" {
   type        = string
   description = "connection type"
   default     = "ssh"
@@ -160,7 +142,7 @@ variable "user" {
   default     = "ec2-user"
 }
 
-variable "private_key_path" {
+variable "privatekey_path" {
   type        = string
   description = "path for private key"
   default     = "~/.ssh/id_rsa"
@@ -178,7 +160,7 @@ variable "device_name" {
   default     = "/dev/sdh"
 }
 
-variable "ebs_vol_name" {
+variable "ebs_volume_name" {
   type        = string
   description = "ebs volume name"
   default     = "ebs_volume"
@@ -187,10 +169,41 @@ variable "ebs_vol_name" {
 variable "ec2_name" {
   type        = string
   description = "name of ec2 instance"
-  default     = "prod_ec2"
+  default     = "csye_ec2"
 }
 
-variable "ami_id" {
+variable "ami_name" {
   type        = string
-  description = "ami id for ec2 instance"
+  description = "ami name for ec2 instance"
+  default     = "amazon-linux-2-node-mysql-ami"
+}
+
+variable "DB_USER" {
+  type        = string
+  description = "username for rds"
+  default     = "csye6225"
+}
+
+variable "DB_PASSWORD" {
+  type        = string
+  description = "password for rds"
+  default     = "Leomessi1!"
+}
+
+variable "DB_DIALECT" {
+  type        = string
+  description = "dialect for rds"
+  default     = "mysql"
+}
+
+variable "DB_HOST" {
+  type        = number
+  description = "port for rds"
+  default     = 3306
+}
+
+variable "AWS_BUCKET_NAME" {
+  type        = string
+  description = "name for s3 bucket"
+  default     = "csye-bucket-"
 }
