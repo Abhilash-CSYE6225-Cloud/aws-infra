@@ -1,209 +1,93 @@
+variable "vpc_cidr" {
+  type        = string
+  description = "CIDR for vpc in the given region"
+}
+
 variable "aws_region" {
   type        = string
-  description = "Closest AWS Region"
-  default     = "us-east-1"
+  description = "AWS Region"
 }
 
 variable "aws_profile" {
   type        = string
-  description = "AWS Profile to launch"
-  default     = "dev"
+  description = "AWS Account profile"
 }
 
-variable "cidr_block" {
+variable "public_tag" {
   type        = string
-  description = "CIDR Block for VPC"
-  default     = "10.0.0.0/16"
-}
-
-variable "availability_zones" {
-  type        = list(string)
-  description = "Availabillity zones for subnets"
-  default     = ["a", "b", "c"]
-}
-
-variable "vpc_name" {
-  type        = string
-  description = "Name for VPC"
-  default     = "csye-vpc"
+  description = "public tag"
 }
 
 variable "public_subnet_name" {
   type        = string
-  description = "Public subnet name"
-  default     = "csye-public-subnet"
+  description = "public subnet name"
+}
+
+variable "private_tag" {
+  type        = string
+  description = "private subnet name"
 }
 
 variable "private_subnet_name" {
   type        = string
-  description = "Private subnet name"
-  default     = "csye-private-subnet"
+  description = "private subnet name"
 }
 
-variable "gateway_name" {
+variable "subnet_prefix" {
   type        = string
-  description = "Gateway name"
-  default     = "csye-gateway"
+  description = "subnet prefix for all subnets under vpc 1"
 }
 
-variable "public_table_name" {
+variable "subnet_suffix" {
   type        = string
-  description = "public route table name"
-  default     = "csye-public-route-table"
+  description = "subnet suffix for all subnets under all vpcs"
 }
 
-variable "private_table_name" {
+variable "public_route_table_cidr" {
   type        = string
-  description = "private route table name"
-  default     = "csye-private-route-table"
+  description = "public route table CIDR for all ipv4"
 }
 
-variable "cidr_gateway" {
-  type        = string
-  description = "subnet for gateway"
-  default     = "0.0.0.0/0"
-}
-
-variable "sub_prefix" {
-  type        = string
-  description = "prefix for cidr"
-  default     = "10.0."
-}
-
-variable "sub_postfix" {
-  type        = string
-  description = "postfix for cidr"
-  default     = ".0/24"
-}
-
-variable "security_group_name" {
-  type        = string
-  description = "security group name"
-  default     = "applicatiom"
-}
-
-variable "ports" {
-  type        = list(number)
-  description = "list of parts"
-  default     = [22, 80, 443, 5000, 0]
-}
-
-variable "protocol" {
-  type        = string
-  description = "protocol name"
-  default     = "tcp"
-}
-
-variable "eprotocol" {
-  type        = string
-  description = "egress protocol name"
-  default     = "-1"
-}
-
-variable "keypair_name" {
-  type        = string
-  description = "key-pair name"
-  default     = "app_keypair"
-}
-
-variable "keypair_path" {
-  type        = string
-  description = "key-pair path"
-  default     = "~/.ssh/id_rsa.pub"
-}
-
-variable "ebs_volume_size" {
-  type        = number
-  description = "ebs volume size"
-  default     = 50
-}
-
-variable "ebs_volume_type" {
-  type        = string
-  description = "ebs volume type"
-  default     = "gp2"
+variable "aws_keypair_dev" {
+  description = " SSH keys to connect to EC2 Instance"
+  default     = "aws-dev-kp"
 }
 
 variable "instance_type" {
-  type        = string
-  description = "ebs instance type"
+  description = "instance type for EC2"
   default     = "t2.micro"
 }
 
-variable "connection_type" {
-  type        = string
-  description = "connection type"
-  default     = "ssh"
+variable "security_group" {
+  description = "Name of security group"
+  default     = "application"
 }
 
-variable "user" {
-  type        = string
-  description = "user"
-  default     = "ec2-user"
+variable "ec2_tag_name" {
+  description = "Tag Name of for EC2 instance"
+  default     = "ec2-webapp-dev"
 }
 
-variable "privatekey_path" {
+variable "latest_ami" {
   type        = string
-  description = "path for private key"
-  default     = "~/.ssh/id_rsa"
+  description = "Tag Name of for EC2 instance"
 }
 
-variable "ssh_timeout" {
-  type        = string
-  description = "timeout for ssh"
-  default     = "2h"
+variable "DB_IDENTIFIER" {
+  type = string
 }
 
-variable "device_name" {
-  type        = string
-  description = "name of device"
-  default     = "/dev/sdh"
+variable "DB_NAME" {
+  type = string
 }
 
-variable "ebs_volume_name" {
-  type        = string
-  description = "ebs volume name"
-  default     = "ebs_volume"
+variable "DB_USERNAME" {
+  type = string
 }
-
-variable "ec2_name" {
-  type        = string
-  description = "name of ec2 instance"
-  default     = "csye_ec2"
-}
-
-variable "ami_name" {
-  type        = string
-  description = "ami name for ec2 instance"
-  default     = "amazon-linux-2-node-mysql-ami"
-}
-
-variable "DB_USER" {
-  type        = string
-  description = "username for rds"
-  default     = "csye6225"
-}
-
 variable "DB_PASSWORD" {
-  type        = string
-  description = "password for rds"
-  default     = "Leomessi1!"
-}
-
-variable "DB_DIALECT" {
-  type        = string
-  description = "dialect for rds"
-  default     = "mysql"
+  type = string
 }
 
 variable "DB_HOST" {
-  type        = number
-  description = "port for rds"
-  default     = 3306
-}
-
-variable "AWS_BUCKET_NAME" {
-  type        = string
-  description = "name for s3 bucket"
-  default     = "csye-bucket-"
+  type = string
 }
