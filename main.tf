@@ -378,3 +378,11 @@ resource "aws_security_group" "database_security_group" {
     Name = "database-security-group"
   }
 }
+
+resource "aws_route53_record" "Abhilashgade_A" {
+  zone_id = var.aws_profile == "dev" ? var.zone_dev_id : var.zone_prod_id
+  name    = var.aws_profile == "dev" ? var.dev_domain : var.prod_domain
+  type    = "A"
+  ttl     = 60
+  records = [aws_eip.elasticip.public_ip]
+}
