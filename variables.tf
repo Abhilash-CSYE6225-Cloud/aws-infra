@@ -91,3 +91,23 @@ variable "DB_PASSWORD" {
 variable "DB_HOST" {
   type = string
 }
+variable "dev_zone_id" {
+  type    = string
+  default = "Z024266211DG4QKXW7MAN"
+}
+variable "prod_zone_id" {
+  type    = string
+  default = "Z02327863RP61GQP2P46H"
+}
+variable "dev_A_record_name" {
+  type    = string
+  default = "dev.abhilashgade.me"
+}
+variable "prod_A_record_name" {
+  type    = string
+  default = "prod.abhilashgade.me"
+}
+resource "aws_eip" "elasticip" {
+  instance = aws_instance.ec2-webapp-dev.id
+  vpc      = true
+}
