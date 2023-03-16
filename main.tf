@@ -78,15 +78,15 @@ resource "aws_key_pair" "example" {
   public_key = file("~/.ssh/id_ed25519.pub")
 }
 resource "aws_instance" "ec2-webapp-dev" {
-  count                       = 1
-  ami                         = "ami-0ac95c37147119448"
+  # count                       = 1
+  ami                         = var.latest_ami
   key_name                    = aws_key_pair.example.key_name
   instance_type               = var.instance_type
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.public_subnets[0].id
   vpc_security_group_ids      = [aws_security_group.application.id]
   ebs_optimized               = false
-  iam_instance_profile = aws_iam_instance_profile.s3_access_instance_profile.name
+  iam_instance_profile        = aws_iam_instance_profile.s3_access_instance_profile.name
 
   root_block_device {
     volume_size           = 50
@@ -367,7 +367,7 @@ resource "aws_security_group" "application" {
   tags = {
     Name = var.security_group
   }
-  
+
 }
 
 resource "aws_security_group" "database_security_group" {
