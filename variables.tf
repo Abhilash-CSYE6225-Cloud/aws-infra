@@ -91,19 +91,19 @@ variable "DB_PASSWORD" {
 variable "DB_HOST" {
   type = string
 }
-variable "dev_zone_id" {
+variable "zone_dev_id" {
   type    = string
   default = "Z024266211DG4QKXW7MAN"
 }
-variable "prod_zone_id" {
+variable "zone_prod_id" {
   type    = string
   default = "Z02327863RP61GQP2P46H"
 }
-variable "dev_A_record_name" {
+variable "dev_domain" {
   type    = string
   default = "dev.abhilashgade.me"
 }
-variable "prod_A_record_name" {
+variable "prod_domain" {
   type    = string
   default = "prod.abhilashgade.me"
 }
