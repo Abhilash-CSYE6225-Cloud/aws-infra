@@ -131,7 +131,7 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl start webapp.service
 sudo systemctl enable webapp.service
-
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/tmp/config.json
 echo 'export NODE_ENV=dev' >> /home/ec2-user/.bashrc,
 echo 'export PORT=3000' >> /home/ec2-user/.bashrc,
 echo 'export DB_DIALECT=mysql' >> /home/ec2-user/.bashrc,
@@ -385,4 +385,45 @@ resource "aws_route53_record" "Abhilashgade_A" {
   type    = "A"
   ttl     = 60
   records = [aws_eip.elasticip.public_ip]
+}
+
+resource "aws_iam_policy" "WebAppCloudWatch" {
+  name        = "WebAppCloudWatch"
+  description = "Allows EC2 instances to access CloudWatch"
+  policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "cloudwatch:PutMetricData",
+            "ec2:DescribeTags",
+            "logs:PutLogEvents",
+            "logs:DescribeLogStreams",
+            "logs:DescribeLogGroups",
+            "logs:CreateLogStream",
+            "logs:CreateLogGroup"
+          ],
+          "Resource" : "*"
+        },
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "ssm:GetParameter",
+            "ssm:PutParameter"
+          ],
+          "Resource" : "arn:aws:ssm:::parameter/AmazonCloudWatch-*"
+        }
+      ]
+    }
+  )
+}
+resource "aws_iam_instance_profile" "ec2_instance_profile" {
+  name = "EC2-CSYE6225-Instance-Profile"
+  role = aws_iam_role.s3_access_role.name
+}
+resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment" {
+  policy_arn = aws_iam_policy.WebAppCloudWatch.arn
+  role       = aws_iam_role.s3_access_role.name
 }

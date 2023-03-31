@@ -88,9 +88,9 @@ variable "DB_PASSWORD" {
   type = string
 }
 
-variable "DB_HOST" {
-  type = string
-}
+# variable "DB_HOST" {
+#   type = string
+# }
 variable "zone_dev_id" {
   type    = string
   default = "Z024266211DG4QKXW7MAN"

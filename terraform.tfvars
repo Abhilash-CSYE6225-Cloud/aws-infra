@@ -8,7 +8,7 @@ DB_IDENTIFIER           = "csye6225"
 
 DB_PASSWORD = "Abhilash12"
 DB_HOST     = "csye6225.cclfmisvn8sp.us-east-1.rds.amazonaws.com"
-latest_ami  = "ami-0ec8d6df61c34f0b4"
+latest_ami  = "ami-0819be316396e8820"
 aws_region  = "us-east-1"
 DB_NAME     = "csye6225"
 aws_profile = "dev"
