@@ -77,74 +77,74 @@ resource "aws_key_pair" "example" {
   key_name   = "example-key"
   public_key = file("~/.ssh/id_ed25519.pub")
 }
-resource "aws_instance" "ec2-webapp-dev" {
-  # count                       = 1
-  ami                         = var.latest_ami
-  key_name                    = aws_key_pair.example.key_name
-  instance_type               = var.instance_type
-  associate_public_ip_address = true
-  subnet_id                   = aws_subnet.public_subnets[0].id
-  vpc_security_group_ids      = [aws_security_group.application.id]
-  ebs_optimized               = false
-  iam_instance_profile        = aws_iam_instance_profile.s3_access_instance_profile.name
+# resource "aws_instance" "ec2-webapp-dev" {
+#   # count                       = 1
+#   ami                         = var.latest_ami
+#   key_name                    = aws_key_pair.example.key_name
+#   instance_type               = var.instance_type
+#   associate_public_ip_address = true
+#   subnet_id                   = aws_subnet.public_subnets[0].id
+#   vpc_security_group_ids      = [aws_security_group.application.id]
+#   ebs_optimized               = false
+#   iam_instance_profile        = aws_iam_instance_profile.s3_access_instance_profile.name
 
-  root_block_device {
-    volume_size           = 50
-    volume_type           = "gp2"
-    delete_on_termination = true
-  }
-  disable_api_termination = false
-  tags = {
-    Name = var.ec2_tag_name
-  }
+#   root_block_device {
+#     volume_size           = 50
+#     volume_type           = "gp2"
+#     delete_on_termination = true
+#   }
+#   disable_api_termination = false
+#   tags = {
+#     Name = var.ec2_tag_name
+#   }
 
-  #Sending User Data to EC2
-  user_data = <<EOT
-#!/bin/bash
-cat <<EOF > /etc/systemd/system/webapp.service
-[Unit]
-Description=Webapp Service
-After=network.target
+#   #Sending User Data to EC2
+#   user_data = <<EOT
+# #!/bin/bash
+# cat <<EOF > /etc/systemd/system/webapp.service
+# [Unit]
+# Description=Webapp Service
+# After=network.target
 
-[Service]
-Environment="NODE_ENV=dev"
-Environment="DB_PORT=3306"
-Environment="DB_DIALECT=mysql"
-Environment="DB_HOST=${element(split(":", aws_db_instance.rds_instance.endpoint), 0)}"
-Environment="DB_USER=${aws_db_instance.rds_instance.username}"
-Environment="DB_PASSWORD=${aws_db_instance.rds_instance.password}"
-Environment="DB=${aws_db_instance.rds_instance.db_name}"
-Environment="AWS_BUCKET_NAME=${aws_s3_bucket.webapp-s3.bucket}"
-Environment="AWS_REGION=${var.aws_region}"
+# [Service]
+# Environment="NODE_ENV=dev"
+# Environment="DB_PORT=3306"
+# Environment="DB_DIALECT=mysql"
+# Environment="DB_HOST=${element(split(":", aws_db_instance.rds_instance.endpoint), 0)}"
+# Environment="DB_USER=${aws_db_instance.rds_instance.username}"
+# Environment="DB_PASSWORD=${aws_db_instance.rds_instance.password}"
+# Environment="DB=${aws_db_instance.rds_instance.db_name}"
+# Environment="AWS_BUCKET_NAME=${aws_s3_bucket.webapp-s3.bucket}"
+# Environment="AWS_REGION=${var.aws_region}"
 
-Type=simple
-User=ec2-user
-WorkingDirectory=/home/ec2-user/webapp
-ExecStart=/usr/bin/node listener.js
-Restart=on-failure
+# Type=simple
+# User=ec2-user
+# WorkingDirectory=/home/ec2-user/webapp
+# ExecStart=/usr/bin/node listener.js
+# Restart=on-failure
 
-[Install]
-WantedBy=multi-user.target" > /etc/systemd/system/webapp.service
-EOF
+# [Install]
+# WantedBy=multi-user.target" > /etc/systemd/system/webapp.service
+# EOF
 
 
-sudo systemctl daemon-reload
-sudo systemctl start webapp.service
-sudo systemctl enable webapp.service
-sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/tmp/config.json
-echo 'export NODE_ENV=dev' >> /home/ec2-user/.bashrc,
-echo 'export PORT=3000' >> /home/ec2-user/.bashrc,
-echo 'export DB_DIALECT=mysql' >> /home/ec2-user/.bashrc,
-echo 'export DB_HOST=${element(split(":", aws_db_instance.rds_instance.endpoint), 0)}' >> /home/ec2-user/.bashrc,
-echo 'export DB_USERNAME=${aws_db_instance.rds_instance.username}' >> /home/ec2-user/.bashrc,
-echo 'export DB_PASSWORD=${aws_db_instance.rds_instance.password}' >> /home/ec2-user/.bashrc,
-echo 'export DB_NAME=${aws_db_instance.rds_instance.db_name}' >> /home/ec2-user/.bashrc,
-echo 'export AWS_BUCKET_NAME=${aws_s3_bucket.webapp-s3.bucket}' >> /home/ec2-user/.bashrc,
-echo 'export AWS_REGION=${var.aws_region}' >> /home/ec2-user/.bashrc,
-source /home/ec2-user/.bashrc
-EOT
+# sudo systemctl daemon-reload
+# sudo systemctl start webapp.service
+# sudo systemctl enable webapp.service
+# sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/tmp/config.json
+# echo 'export NODE_ENV=dev' >> /home/ec2-user/.bashrc,
+# echo 'export PORT=3000' >> /home/ec2-user/.bashrc,
+# echo 'export DB_DIALECT=mysql' >> /home/ec2-user/.bashrc,
+# echo 'export DB_HOST=${element(split(":", aws_db_instance.rds_instance.endpoint), 0)}' >> /home/ec2-user/.bashrc,
+# echo 'export DB_USERNAME=${aws_db_instance.rds_instance.username}' >> /home/ec2-user/.bashrc,
+# echo 'export DB_PASSWORD=${aws_db_instance.rds_instance.password}' >> /home/ec2-user/.bashrc,
+# echo 'export DB_NAME=${aws_db_instance.rds_instance.db_name}' >> /home/ec2-user/.bashrc,
+# echo 'export AWS_BUCKET_NAME=${aws_s3_bucket.webapp-s3.bucket}' >> /home/ec2-user/.bashrc,
+# echo 'export AWS_REGION=${var.aws_region}' >> /home/ec2-user/.bashrc,
+# source /home/ec2-user/.bashrc
+# EOT
 
-}
+# }
 resource "aws_iam_role" "s3_access_role" {
   name = "EC2-CSYE6225"
 
@@ -280,12 +280,13 @@ resource "aws_security_group_rule" "ec2_ingress" {
   protocol                 = "tcp"
   security_group_id        = aws_security_group.application.id
   source_security_group_id = aws_security_group.database_security_group.id
+
 }
 resource "random_uuid" "image_uuid" {}
 
 resource "aws_s3_bucket" "webapp-s3" {
-  bucket = "webapp-s3-${random_uuid.image_uuid.result}"
-  # acl           = "private"
+  bucket        = "webapp-s3-${random_uuid.image_uuid.result}"
+  acl           = "private"
   force_destroy = true
 }
 
@@ -325,32 +326,33 @@ resource "aws_security_group" "application" {
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port       = 3000
+    to_port         = 3000
+    protocol        = "tcp"
+    security_groups = [aws_security_group.load_balancer_security_group.id]
+
   }
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   from_port   = 80
+  #   to_port     = 80
+  #   protocol    = "tcp"
+  #   security_groups = [aws_security_group.load_balancer_security_group.id]
+  # }
 
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [aws_security_group.load_balancer_security_group.id]
   }
 
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   from_port   = 443
+  #   to_port     = 443
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
 
   egress {
     from_port = 3306
@@ -383,9 +385,15 @@ resource "aws_route53_record" "Abhilashgade_A" {
   zone_id = var.aws_profile == "dev" ? var.zone_dev_id : var.zone_prod_id
   name    = var.aws_profile == "dev" ? var.dev_domain : var.prod_domain
   type    = "A"
-  ttl     = 60
-  records = [aws_eip.elasticip.public_ip]
+
+  alias {
+    name                   = aws_lb.web.dns_name
+    zone_id                = aws_lb.web.zone_id
+    evaluate_target_health = true
+  }
+
 }
+
 
 resource "aws_iam_policy" "WebAppCloudWatch" {
   name        = "WebAppCloudWatch"
@@ -426,4 +434,12 @@ resource "aws_iam_instance_profile" "ec2_instance_profile" {
 resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment" {
   policy_arn = aws_iam_policy.WebAppCloudWatch.arn
   role       = aws_iam_role.s3_access_role.name
-}
+} 
+# resource "aws_cloudwatch_log_group" "csye" {
+#   name = "csye6225"
+# }
+
+# resource "aws_cloudwatch_log_stream" "webapp" {
+#   name           = "webapp"
+#   log_group_name = aws_cloudwatch_log_group.csye.name
+# }
