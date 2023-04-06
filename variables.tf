@@ -107,7 +107,7 @@ variable "prod_domain" {
   type    = string
   default = "prod.abhilashgade.me"
 }
-resource "aws_eip" "elasticip" {
-  instance = aws_instance.ec2-webapp-dev.id
-  vpc      = true
-}
+# resource "aws_eip" "elasticip" {
+#   instance = aws_instance.ec2-webapp-dev.id
+#   vpc      = true
+# }
