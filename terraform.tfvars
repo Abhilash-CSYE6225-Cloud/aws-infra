@@ -8,10 +8,10 @@ DB_IDENTIFIER           = "csye6225"
 
 DB_PASSWORD = "Abhilash12"
 DB_HOST     = "csye6225.cclfmisvn8sp.us-east-1.rds.amazonaws.com"
-latest_ami  = "ami-0e798689a34491ec7"
+latest_ami  = "ami-0819be316396e8820"
 aws_region  = "us-east-1"
 DB_NAME     = "csye6225"
-aws_profile = "dev"
+aws_profile = "demo"
 vpc_cidr    = "10.0.0.0/16"
 public_tag  = "public"
 
