@@ -1,6 +1,7 @@
 provider "aws" {
   region  = var.aws_region
   profile = var.aws_profile
+  
 }
 
 data "aws_availability_zones" "available" {
@@ -232,6 +233,8 @@ resource "aws_db_instance" "rds_instance" {
   allocated_storage      = 20
   skip_final_snapshot    = true
   #   engine_version         = "5.7"
+  storage_encrypted    = true
+  kms_key_id           = aws_kms_key.rds_encryption_key.arn
 
   tags = {
     Name = "csye6225_rds"
